@@ -6,11 +6,19 @@ function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Проверяем, что Telegram WebApp инициализирован
     if (window.Telegram?.WebApp) {
       const tg = window.Telegram.WebApp;
-      tg.expand(); // Раскрываем приложение на весь экран
-      setUser(tg.initDataUnsafe?.user); // Получаем данные пользователя
+      tg.expand(); // Раскрываем на весь экран
+
+      // Проверяем данные (оба варианта)
+      console.log("initData:", tg.initData); // Закодированная строка
+      console.log("initDataUnsafe.user:", tg.initDataUnsafe?.user); // Готовый объект
+
+      if (tg.initDataUnsafe?.user) {
+        setUser(tg.initDataUnsafe.user);
+      } else {
+        console.error("Данные пользователя не пришли!");
+      }
     }
   }, []);
 
